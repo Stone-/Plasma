@@ -348,7 +348,8 @@ class kCommands:
         "/saveclothing": "SaveClothing",
         "/loadclothing": "LoadClothing",
         "/threaten": "CoopExample",
-        "/roll": "RollDice"
+        "/roll": "RollDice",
+        "/decimal": "DecimalToOts"
     }
 
 ## Numeric limits for the KI.

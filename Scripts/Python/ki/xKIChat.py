@@ -1752,4 +1752,48 @@ class CommandsProcessor:
         if num_dice == 1:
             PtSendKIMessage(kKIChatStatusMsg, "{} rolled a single {}-sided die with a result of {}.".format(PtGetLocalPlayer().getPlayerName(), num_face, roll[0]))
         else:
-            PtSendKIMessage(kKIChatStatusMsg, "{} rolled {}d{} with a result of {} for a total of {}.".format(PtGetLocalPlayer().getPlayerName(), num_dice, num_face, roll, sum(roll)))        
+            PtSendKIMessage(kKIChatStatusMsg, "{} rolled {}d{} with a result of {} for a total of {}.".format(PtGetLocalPlayer().getPlayerName(), num_dice, num_face, roll, sum(roll)))
+
+    ## Convert a non-negative integer to its D'ni OTS alphabetic representation. Displays the spelled-out OTS string
+    def DecimalToOts(self, text):
+        zero = 'roon'
+        stems = ('', 'fah', 'bree', 'sehn', 'tor',
+                 'vaht', 'vahgahfah', 'vahgahbree', 'vahgahsen', 'vahgahtor',
+                 'nayvoo', 'naygahfah', 'naygahbree', 'naygahsen', 'naygahtor',
+                 'heebor', 'heegahfah', 'heegahbree', 'heegahsen', 'heegahtor',
+                 'rish', 'rigahfah', 'rigahbree', 'rigahsen', 'rigahtor')
+        suffixes = ('', 'see', 'rah', 'lahn', 'mel', 'blo')
+        max_value = 25 ** 6 - 1  # 244,140,624: largest number representable with 6 base-25 "digits"
+
+        # Convert a non-negative integer to its D'ni OTS alphabetic representation.
+        def decimal_to_ots(decimal: int) -> str:
+            if decimal == 0:
+                return zero
+            words = []
+            power = 0
+            while decimal > 0:
+                decimal, digit = divmod(decimal, 25)
+                if digit:
+                    words.append(stems[digit] + suffixes[power])
+                power += 1
+            return ' '.join(reversed(words))
+
+        # Parse input text into a valid non-negative integer or Error on invalid input.
+        if not text:
+            message = ("Usage: /decimal <integer>  "
+                       "Takes an non-negative integer and converts it to D\'ni using the old translation standard.")
+        elif not text.isdigit():
+            message = "Invalid input: must be a non-negative integer (digits only)."
+        else:
+            decimal = int(text)
+            if decimal > max_value:
+                message = ("Max Value: D'ni does not have a word for powers over 6. "
+                           f"The largest number representable with 6 base-25 suffixes is {max_value}")
+            else:
+                # Convert the decimal to its D'ni OTS representation and send it to the chat manager.
+                ots = decimal_to_ots(decimal)
+                self.chatMgr.DisplayStatusMessage(f"D'ni OTS: {ots}")
+                return
+
+        # Send the error message to the chat manager.
+        self.chatMgr.AddChatLine(None, message, kChat.SystemMessage)

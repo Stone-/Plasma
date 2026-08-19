@@ -827,7 +827,7 @@ class ChatFlags:
         else:
             self.__dict__["lockey"] = False
 
-        self.__dict__["channel"] = (kRTChatChannelMask & flags) / 256
+        self.__dict__["channel"] = (kRTChatChannelMask & flags) // 256
 
     def __setattr__(self, name, value):
 
@@ -880,7 +880,8 @@ class ChatFlags:
                 self.__dict__["flags"] |= kRTChatLocKeyMsg
 
         elif name == "channel":
-            flagsNoChannel = self.__dict__["flags"] & kRTChatNoChannel
+            # Clear only the channel byte; all other flags must survive.
+            flagsNoChannel = self.__dict__["flags"] & ~kRTChatChannelMask
             self.__dict__["flags"] = flagsNoChannel + (value * 256)
 
         self.__dict__[name] = value

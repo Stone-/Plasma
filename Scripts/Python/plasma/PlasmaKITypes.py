@@ -210,11 +210,7 @@ kRTChatLocKeyMsg = 0x80
 kRTChatDniFont = 0x00010000
 
 # flags channel mask
-# Must cover the full uint32 that pfKIMsg serializes. ChatFlags uses this as
-# "flags &= mask ^ bit", so a narrower mask silently clears every flag above it.
-kRTChatFlagMask = 0xFFFFFFFF
 kRTChatChannelMask = 65280
-kRTChatNoChannel = 255
 
 # OnCCRMsg flags
 kCCRBeginCommunication=1

@@ -407,8 +407,6 @@ class xKIChat(object):
 
         # Add message to player's private chat channel.
         cFlags.channel = self.privateChatChannel
-
-        # After the channel, which rewrites flags.
         if useDniFont:
             cFlags.dniFont = True
         if len(selPlyrList) == 0 and listenerOnly:

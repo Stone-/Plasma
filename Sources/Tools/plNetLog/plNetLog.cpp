@@ -69,7 +69,7 @@ struct NetLogMessage_Header
     unsigned        m_protocol;
     int             m_direction;
     unsigned        m_time;
-    size_t          m_size;
+    unsigned        m_size;
 };
 
 static void ShowWinError(const QString& title)

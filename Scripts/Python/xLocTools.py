@@ -138,7 +138,7 @@ def LocalizeAgeName(displayName):
                 localizedName = "D'ni-Rudenna"
             else:
                 localizedName = "???"
-        except:
+        except AttributeError:
             # default to unknown if we can't access the SDL for some reason
             localizedName = "???"
     elif localizedName == "Ae'gura":

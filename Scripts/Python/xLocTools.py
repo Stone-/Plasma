@@ -42,6 +42,7 @@
 from Plasma import *
 from PlasmaTypes import *
 from PlasmaVaultConstants import *
+from xPsnlVaultSDL import *
 
 xFolderIDToFolderName = {
     PtVaultStandardNodes.kUserDefinedNode:          PtGetLocalizedString("Global.FolderNames.UserDefined"),
